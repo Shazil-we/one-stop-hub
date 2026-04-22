@@ -1,4 +1,4 @@
-import TerminalDemo from "@/components/terminal-demo";
+
 import { Terminal } from "@/components/ui/terminal";
 import { SignIn } from "@clerk/nextjs";
 

@@ -26,7 +26,7 @@ export default function SignUpPage() {
                             "Display Technologies Used",
                             "Sign-In to Continue"
                         ]}
-                        outputs={{
+                        outputs={{  
                             0: [
                                 "24K-2521 Shazil Ahmed",
                                 "24K-2565 Syeda Narmeen Zehra",
