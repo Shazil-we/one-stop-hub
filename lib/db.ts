@@ -7,3 +7,5 @@ const pool = new Pool({
 
 // Helper function to execute queries
 export const executeSQL = (text: string, params?: any[]) => pool.query(text, params);
+
+
