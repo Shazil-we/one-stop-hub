@@ -2,8 +2,8 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
 const isProtectedRoute = createRouteMatcher([
   '/student(.*)', 
-  '/admin(.*)', 
-  '/society-head(.*)'
+  '/administrator(.*)', 
+  '/societyhead(.*)'
 ])
 
 // Next.js 16 looks for a default export or a named 'proxy' export.

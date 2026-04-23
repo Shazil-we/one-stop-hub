@@ -1,11 +1,7 @@
 import { executeSQL } from '@/lib/db'
-
+import { Venues } from './Queries/Venues'
 export default async function VenuesPage() {
-  const fetchVenuesSql = `
-    SELECT venue_id, venue_name, capacity, location_block 
-    FROM venues 
-    ORDER BY venue_name ASC;
-  `
+  const fetchVenuesSql = Venues[0].query
   let venues = []
   try {
     const result = await executeSQL(fetchVenuesSql, [])
@@ -21,7 +17,7 @@ export default async function VenuesPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {venues.map((venue) => (
           <div key={venue.venue_id} className="border p-4 rounded-lg shadow-sm">
-            <h2 className="text-xl font-semibold">{venue.venue_name}</h2>
+            <h2 className="text-xl font-semibold">{venue.venue_name}</h2> 
             <p className="text-gray-600">Block: {venue.location_block}</p>
             <p className="text-gray-600">Capacity: {venue.capacity} seats</p>
           </div>

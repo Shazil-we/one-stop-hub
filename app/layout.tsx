@@ -5,6 +5,7 @@ import { ThemeProvider } from "../components/theme-provider";
 import { ThemeButton } from "../components/ThemeButton";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from '@clerk/themes'
+import { TooltipProvider } from "@/components/ui/tooltip"
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -40,7 +41,8 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+
+            <TooltipProvider>{children}</TooltipProvider>
             <div className="fixed bottom-6 right-6 z-50">
               <ThemeButton />
             </div>
