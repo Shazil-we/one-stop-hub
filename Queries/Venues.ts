@@ -66,7 +66,7 @@ export async function createVenue(
   return result.rows[0];
 }
 
-//update venue
+//update venues
 export async function updateVenue(
   venue_id: string,
   venue_name: string,
@@ -93,7 +93,7 @@ export async function updateVenue(
   return result.rows[0];
 }
 
-//delete venue
+//delete venues
 export async function deleteVenue(id: string) {
   const query = `
     DELETE FROM venues
@@ -102,7 +102,7 @@ export async function deleteVenue(id: string) {
   await executeSQL(query, [id]);
 }
 
-//Fetch Venue Details with Bookings
+//Fetch Venue Details with Bookings 
 export async function getVenueWithBookings(venueId: string) {
   const query = `
     SELECT 
