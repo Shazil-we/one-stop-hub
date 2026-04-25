@@ -102,7 +102,7 @@ export async function deleteVenue(id: string) {
   await executeSQL(query, [id]);
 }
 
-//Fetch Venue Details with Bookings 
+//Fetch Venue Detail with Bookings 
 export async function getVenueWithBookings(venueId: string) {
   const query = `
     SELECT 
