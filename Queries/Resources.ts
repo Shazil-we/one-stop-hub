@@ -18,7 +18,7 @@ export async function extractResources() {
   return result.rows as Resource[];
 }
 
-// Fetch resource by ID
+// Fetch resource by IDs
 export async function extractResourceById(id: string) {
   const query = `
     SELECT resource_id, item_name, total_inventory 

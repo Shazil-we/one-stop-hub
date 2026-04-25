@@ -78,7 +78,7 @@ export async function getPendingAllocations() {
   return result.rows;
 }
 
-//Fetch Society’s Resource Requests
+//Fetch Society’s Resource Request
 export async function getSocietyResourceRequests(society_id: string) {
   const query = `
     SELECT 

@@ -96,7 +96,7 @@ export async function getPendingVenueBookings() {
   return result.rows;
 }
 
-//fetch society’s venue booking requests
+//fetch society’s venue booking request
 export async function getSocietyVenueBookings(society_id: string) {
   const query = `
     SELECT 
