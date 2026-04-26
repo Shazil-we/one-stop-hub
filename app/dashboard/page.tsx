@@ -19,22 +19,18 @@ export default async function DashboardHomePage() {
           </h1>
         </div>
       </div>
-
       <div className=" mt-4 mx-auto max-w-8xl  ">
         <h2 className="font-extrabold text-4xl md:text-6xl text-left">
           Overview.
         </h2>
         <HomeCards/>
       </div>
-
       <div className=" mt-4 mx-auto max-w-8xl p-10">
         <h2 className="font-extrabold text-4xl md:text-6xl">
           Upcoming Events.
         </h2>
         <HomeEvents />
       </div>
-
-
     </>
   );
 }

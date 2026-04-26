@@ -16,6 +16,10 @@ export interface EventWithSociety extends Event {
     society_name: string;
   }
 
+  export interface EventWithSocietyAndVenue extends Event {
+    society_name: string;
+    venue_name:string;
+  }
 export async function extractEvents() {
   const query = `
   SELECT event_id, event_name, event_description,event_date,society_id,venue_id,status
@@ -60,6 +64,27 @@ export async function fetchUpcomingEvents() {
   `;
   const result = await executeSQL(query, []);
   return result.rows as EventWithSociety[];
+}
+export async function fetchAllEvents(society_name:string) {
+  const query = `
+    SELECT 
+      e.event_id,
+      e.event_name,
+      e.event_description,
+      e.event_date,
+      e.society_id,
+      e.venue_id,
+      e.status,
+      s.society_name,
+      v.venue_name
+    FROM events e
+    JOIN societies s ON e.society_id = s.society_id
+    JOIN venues v on e.venue_id = v.venue_id
+    where s.society_name ILIKE '%' || $1 || '%'
+    ORDER BY e.event_date ASC
+  `;
+  const result = await executeSQL(query, [society_name]);
+  return result.rows as EventWithSocietyAndVenue[];
 }
 
 export async function fetchEventDetails(eventId: string) {

@@ -45,7 +45,6 @@ export async function fetchUserTickets(userId: string) {
   const result = await executeSQL(query, [userId]);
   return result.rows as UserTicket[];
 }
-
 export async function fetchEventRoster(eventId: string) {
   const query = `
     SELECT 

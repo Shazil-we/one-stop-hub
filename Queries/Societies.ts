@@ -68,11 +68,34 @@ export async function fetchManagedSocieties(headId: string) {
       s.established_date
     FROM societies s
     WHERE s.society_head_id = $1
+    LIMIT 1
   `;
   const result = await executeSQL(query, [headId]);
-  return result.rows as Society[];
+  return result.rows[0] as Society || null;
+}
+export async function extractSocietyIDByName(soc_name: string) {
+  const query = `
+    SELECT 
+      s.society_id
+    FROM societies s
+    WHERE s.society_name = $1
+    LIMIT 1
+  `;
+  const result = await executeSQL(query, [soc_name]);
+  return result.rows[0] as string;
 }
 
+export async function fetchManagedSocietyID(headId: string) {
+  const query = `
+    SELECT 
+      s.society_id,
+    FROM societies s
+    WHERE s.society_head_id = $1
+    LIMIT 1
+  `;
+  const result = await executeSQL(query, [headId]);
+  return result.rows[0] as string;
+}
 export async function searchSocieties(search: string) {
   const query = `
     SELECT 
@@ -98,8 +121,7 @@ export async function createSociety(
 ) {
   const query = `
     INSERT INTO societies (society_name, description, society_head_id, established_date)
-    VALUES ($1, $2, $3, $4)
-    RETURNING *
+    VALUES ($1, $2, $3, $4::DATE)
   `;
   const result = await executeSQL(query, [name, description, headId, establishedDate]);
   return result.rows[0] as Society;
@@ -118,7 +140,6 @@ export async function updateSociety(
       description = $2,
       society_head_id = $3
     WHERE society_id = $4
-    RETURNING *
   `;
   const result = await executeSQL(query, [name, description, headId, id]);
   return result.rows[0] as Society;
