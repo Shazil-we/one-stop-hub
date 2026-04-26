@@ -14,8 +14,12 @@ export interface Event {
 
 export interface EventWithSociety extends Event {
     society_name: string;
+<<<<<<< Updated upstream
   }
 
+=======
+}
+>>>>>>> Stashed changes
 export async function extractEvents() {
   const query = `
   SELECT event_id, event_name, event_description,event_date,society_id,venue_id,status

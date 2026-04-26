@@ -10,16 +10,21 @@ export interface Resource {
 
 // Fetch all resources
 export async function extractResources() {
+<<<<<<< Updated upstream
   const query = `
     SELECT resource_id, item_name, total_inventory 
     FROM resources
   `;
+=======
+  const query = `SELECT * FROM resources`;
+>>>>>>> Stashed changes
   const result = await executeSQL(query, []);
   return result.rows as Resource[];
 }
 
 // Fetch resource by IDs
 export async function extractResourceById(id: string) {
+<<<<<<< Updated upstream
   const query = `
     SELECT resource_id, item_name, total_inventory 
     FROM resources 
@@ -82,4 +87,15 @@ export async function getAvailableResources() {
   `;
   const result = await executeSQL(query, []);
   return result.rows;
+=======
+    const query = `SELECT resource_id, name, total_inventory FROM resources WHERE resource_id = $1 LIMIT 1`;
+    const result = await executeSQL(query, [id]);
+    return (result.rows[0] as Resource) || null;
+  }
+
+export async function FetchAllResources(id: string) {
+    const query = `SELECT resource_id, name, total_inventory FROM resources WHERE resource_id = $1 LIMIT 1`;
+    const result = await executeSQL(query, [id]);
+    return (result.rows[0] as Resource) || null;
+>>>>>>> Stashed changes
 }

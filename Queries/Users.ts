@@ -15,11 +15,13 @@ export interface User {
 export async function extractUserFullInfo() {
   const { userId } = await auth();
   if (!userId) return null;
-  const query = `SELECT user_id, 
+  const query = `
+  SELECT user_id, 
   full_name, email, role, created_at, clerk_id
-  FROM users WHERE clerk_id = $1 
+  FROM users 
+  WHERE clerk_id = $1 AND email = $2
   LIMIT 1`;
-  const result = await executeSQL(query, [userId]);
+  const result = await executeSQL(query, [userId ]);
   return (result.rows[0] as User ) ;
 }
 
