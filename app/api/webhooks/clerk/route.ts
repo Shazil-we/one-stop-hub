@@ -1,7 +1,7 @@
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
-import { executeSQL } from '@/lib/db' // Assuming this is where your raw SQL function lives
+import { executeSQL } from '@/lib/db' 
 
 export async function POST(req: Request) {
   // 1. Get the Webhook Secret from your .env
@@ -13,6 +13,7 @@ export async function POST(req: Request) {
 
   // 2. Get the headers to verify the request actually came from Clerk
   const headerPayload = await headers()
+  
   const svix_id = headerPayload.get('svix-id')
   const svix_timestamp = headerPayload.get('svix-timestamp')
   const svix_signature = headerPayload.get('svix-signature')
@@ -39,26 +40,28 @@ export async function POST(req: Request) {
     console.error('Error verifying webhook:', err)
     return new Response('Error occured', { status: 400 })
   }
-
-  // 5. IF THE VERIFICATION PASSES: Run your Raw SQL!
   const eventType = evt.type
 
   if (eventType === 'user.created') {
-    const { id, email_addresses, first_name, last_name } = evt.data
+    // ADDED 'username' to the destructured data
+    const { id, email_addresses, first_name, last_name, username } = evt.data
 
     const email = email_addresses[0]?.email_address
     const fullName = `${first_name || ''} ${last_name || ''}`.trim() || 'Campus User'
+    
+    // BULLETPROOF FALLBACK: If they didn't provide a username, grab the first half of their email
+    const finalUsername = username || email?.split('@')[0] || `user_${id.substring(0, 5)}`
 
-    // The ONE-STOP-HUB Sync Query
+    // UPDATED QUERY: Added username column and $3 variable
     const syncSql = `
-      INSERT INTO users (user_id, full_name, email, role) 
-      VALUES ($1, $2, $3, 'Student') 
+      INSERT INTO users (user_id, full_name, username, email, role) 
+      VALUES ($1, $2, $3, $4, 'Student') 
       ON CONFLICT (user_id) DO NOTHING;
     `
-    
     try {
-      await executeSQL(syncSql, [id, fullName, email])
-      console.log(`Successfully synced user ${email} to Neon!`)
+      // UPDATED EXECUTION: Passed finalUsername as the 3rd variable
+      await executeSQL(syncSql, [id, fullName, finalUsername, email])
+      console.log(`Successfully synced user ${email} (Username: ${finalUsername}) to Neon!`)
     } catch (error) {
       console.error('Neon DB Sync Failed:', error)
       return new Response('Database Error', { status: 500 })

@@ -29,7 +29,17 @@ export async function extractVenueByID(venueID:string){
     const result = await executeSQL(query, [venueID])
     return (result.rows[0] as Venue) || null ;
 }
-
+export async function extractVenueByName(venueName:string){
+  const query = 
+  `
+  SELECT venue_id
+  FROM venues
+  WHERE venue_name = $1
+  LIMIT 1
+  `;
+  const result = await executeSQL(query, [venueName])
+  return result.rows[0] as string ;
+}
 export async function extractVenueStats(venueId: string) {
     const query = `
       SELECT 
