@@ -7,7 +7,7 @@ export interface User {
   user_id: string;
   full_name: string;
   email: string;
-  role: 'Student' | 'SocietyHead' | 'Admin';
+  role: 'Student' | 'SocietyHead' | 'Administrator';
   created_at: string;
   clerk_id: string;
 }
@@ -22,7 +22,14 @@ export async function extractUserFullInfo() {
   const result = await executeSQL(query, [userId]);
   return (result.rows[0] as User ) ;
 }
-
+export async function extractUserID(){
+  const { userId } = await auth();
+  const query = `SELECT user_id
+  FROM users WHERE clerk_id = $1 
+  LIMIT 1`;
+  const result = await executeSQL(query, [userId]);
+  return (result.rows[0] as string ) ;
+}
 export async function extractUserPublicInfo(id: string) {
     const query = `SELECT full_name, role FROM users WHERE user_id = $1 LIMIT 1`;
     const result = await executeSQL(query, [id]);

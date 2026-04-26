@@ -45,7 +45,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   // Determine the correct navigation array based on the database role
   const NavITEMS = 
-    sidebarUser.role === "Admin" ? ADMINISTRATOR_NAV : 
+    sidebarUser.role === "Administrator" ? ADMINISTRATOR_NAV : 
     sidebarUser.role === "SocietyHead" ? SOCIETYHEAD_NAV : 
     STUDENT_NAV;
 
@@ -54,7 +54,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
       {/* Pass the dynamic items into the sidebar */}
       <AppSidebar user={sidebarUser} items={NavITEMS} />
       <SidebarInset>
-        <header className="flex h-16 w-7xl shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 fixed backdrop-blur-xl z-200 max-w-8xl">
+        <header className="flex h-16 w-7xl shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 fixed backdrop-blur-xl z-10 max-w-8xl">
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />

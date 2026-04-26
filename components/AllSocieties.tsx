@@ -2,13 +2,13 @@
 import { cn } from "@/lib/utils";
 import React from "react";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
-import { fetchUpcomingEvents } from "@/Queries/Events";
 import {
     IconClipboardCopy,
     IconFileBroken,
     IconSignature,
     IconTableColumn,
 } from "@tabler/icons-react";
+import { fetchAllSocieties } from "@/Queries/Societies";
 
 
 const Skeleton = () => (
@@ -17,11 +17,11 @@ const Skeleton = () => (
 
 
 export default async function AllEvents() {
-    const UpcomingEvents = await fetchUpcomingEvents();
+    const Societies = await fetchAllSocieties();
     return (
         <>
             <BentoGrid className="max-w-4xl mx-auto mt-12 md:auto-rows-[20rem]">
-                {UpcomingEvents.map((UpcomingEvent, i) => {
+                {Societies.map((Society, i) => {
                     let dynamicClass:string = "md:col-span-2";
                     if(i%4 ==0 || i%4 == 3){
                         dynamicClass = "md:col-span-3";
@@ -29,8 +29,8 @@ export default async function AllEvents() {
                     return (
                         <BentoGridItem
                             key={i}
-                            title={UpcomingEvent.event_name}
-                            description={UpcomingEvent.event_description}
+                            title={Society.society_name}
+                            description={Society.description}
                             header={<Skeleton />}
                             className={dynamicClass}
                         />
