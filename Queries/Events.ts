@@ -3,23 +3,28 @@
 import { executeSQL } from "@/lib/db";
 
 export interface Event {
-  event_id: string;
+  event_id: number;
   event_name: string;
   event_description:string
   event_date: string;
-  society_id: string;
+  society_id: number;
   venue_id:string
   status: string;
 }
 
+export interface EventWithSocietyAndVenue{
+  event_id: number;
+  event_name: string;
+  event_description: string;
+  event_date:string;
+  status:string
+  society_name:string
+  venue_name:string;
+  
+}
 export interface EventWithSociety extends Event {
     society_name: string;
-<<<<<<< Updated upstream
-  }
-
-=======
 }
->>>>>>> Stashed changes
 export async function extractEvents() {
   const query = `
   SELECT event_id, event_name, event_description,event_date,society_id,venue_id,status
@@ -27,7 +32,15 @@ export async function extractEvents() {
   const result = await executeSQL(query, []);
   return result.rows as Event[];
 }
-
+export async function extractEventID(name:string, venue:number){
+  const query = `
+  SELECT event_id
+  FROM events
+  WHERE event_name = $1 AND venue_id = $2
+  LIMIT 1`;
+  const result = await executeSQL(query, [name,venue]);
+  return result.rows[0].event_id as number;
+}
 export async function extractEventById(id: string) {
     const query = `SELECT event_id, event_name, event_description,event_date,society_id,venue_id,status FROM events WHERE event_id = $1 LIMIT 1`;
     const result = await executeSQL(query, [id]);
@@ -86,6 +99,24 @@ export async function fetchEventDetails(eventId: string) {
   return (result.rows[0] as EventWithSociety) || null;
 }
 
+export async function fetchAllEvents(Sname: string) {
+  const query = `
+    SELECT 
+      e.event_id,
+      e.event_name,
+      e.event_description,
+      e.event_date,
+      e.status,
+      s.society_name,
+    	v.venue_name
+    FROM events e
+    JOIN societies s ON e.society_id = s.society_id
+    JOIN venues v on e.venue_id = v.venue_id
+    WHERE s.society_name LIKE '%' || $1 || '%'
+  `;
+  const result = await executeSQL(query, [Sname]);
+  return (result.rows as EventWithSocietyAndVenue[]) || null;
+}
 export async function fetchSocietyEvents(societyId: string) {
   const query = `
     SELECT 
@@ -147,8 +178,8 @@ export async function createEvent(
   name: string,
   description: string,
   date: string,
-  societyId: string,
-  venueId: string
+  societyId: number,
+  venueId: number
 ) {
   const query = `
     INSERT INTO events (
@@ -159,8 +190,7 @@ export async function createEvent(
       venue_id,
       status
     )
-    VALUES ($1, $2, $3, $4, $5, 'Draft')
-    RETURNING *
+    VALUES ($1, $2, $3::DATE, $4, $5, 'Scheduled')
   `;
   const result = await executeSQL(query, [
     name,
@@ -168,7 +198,7 @@ export async function createEvent(
     date,
     societyId,
     venueId,
-  ]);
+  ]); 
   return result.rows[0] as Event;
 }
 

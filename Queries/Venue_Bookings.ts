@@ -25,17 +25,15 @@ export async function extractVenueBookingById(id: string) {
 
 //Request Venue Booking
 export async function requestVenueBooking(
-  event_id: string,
-  venue_id: string
+  event_id: number,
+  venue_id: number
 ) {
   const query = `
     INSERT INTO venue_bookings (event_id, venue_id, approval_status)
     VALUES ($1, $2, 'Pending')
-    RETURNING *
   `;
-  const result = await executeSQL(query, [event_id, venue_id]);
-  return result.rows[0];
-}
+  await executeSQL(query, [event_id, venue_id]);
+} 
 
 //update venue booking approval status
 export async function updateBookingStatus(

@@ -10,6 +10,7 @@ import {
 import { fetchAllEvents } from "@/Queries/Events"
 import EventInput from "./EventInput";
 import ManageEventsButton from "./ManageEventsButton";
+import EventRowActions from "./EventRowActions";
 
 export default async function ManageEventsTable({
     searchParams,
@@ -19,16 +20,16 @@ export default async function ManageEventsTable({
     const resolvedParams = await searchParams;
     const Sname = resolvedParams?.society || "";
     const AllEvents = await fetchAllEvents(Sname);
-    const EventsCols = ["Event Id", "Event Name", "Society Name", "Event Date", "Venue Name", "Status"];
+    const EventsCols = ["Event Id", "Event Name", "Society Name", "Event Date", "Venue Name", "Status", "Actions"];
 
     return (
         <>
-            <div className="flex-col mt-12 hidden md:flex">
+            <div className="flex-col mt-12 w-full max-w-4xl hidden md:flex">
                 <div className="flex items-center justify-between">
                     <EventInput />
                     <ManageEventsButton/>
                 </div>
-                <Table className="mt-8">
+                <Table className="mt-8 ">
                     <TableCaption>All Current Events</TableCaption>
                     <TableHeader>
                         <TableRow>
@@ -44,9 +45,10 @@ export default async function ManageEventsTable({
                                     <TableCell>{Event.event_id}</TableCell>
                                     <TableCell>{Event.event_name}</TableCell>
                                     <TableCell>{Event.society_name}</TableCell>
-                                    <TableCell>{Event.event_date}</TableCell>
+                                    <TableCell>{new Date(Event.event_date).toLocaleDateString()}</TableCell>
                                     <TableCell>{Event.venue_name}</TableCell>
                                     <TableCell>{Event.status}</TableCell>
+                                    <TableCell><EventRowActions event={Event} /></TableCell>
                                 </TableRow>
                             )
                         })}     

@@ -10,6 +10,12 @@ export interface ResourceAllocation {
   allocation_status:string;
 }
 
+export interface ResourceAllocationRequest extends ResourceAllocation {
+  item_name: string;
+  event_name: string;
+  society_name: string;
+}
+
 export async function extractResourceAllocations() {
   const query = `SELECT allocation_id, event_id, resource_id, quantity_requested,allocation_status FROM resource_allocations`;
   const result = await executeSQL(query, []);
@@ -94,4 +100,54 @@ export async function getSocietyResourceRequests(society_id: string) {
   `;
   const result = await executeSQL(query, [society_id]);
   return result.rows;
+}
+
+export async function extractResourceAllocationRequests() {
+  const query = `
+    SELECT
+      ra.allocation_id,
+      ra.event_id,
+      ra.resource_id,
+      ra.quantity_requested,
+      ra.allocation_status,
+      r.item_name,
+      e.event_name,
+      s.society_name
+    FROM resource_allocations ra
+    JOIN resources r ON ra.resource_id = r.resource_id
+    JOIN events e ON ra.event_id = e.event_id
+    JOIN societies s ON e.society_id = s.society_id
+    ORDER BY
+      CASE WHEN ra.allocation_status = 'Pending' THEN 0 ELSE 1 END,
+      ra.allocation_id DESC
+  `;
+  const result = await executeSQL(query, []);
+  return result.rows as ResourceAllocationRequest[];
+}
+
+export async function approveResourceAllocation(allocationId: string) {
+  const query = `
+    UPDATE resource_allocations
+    SET allocation_status = 'Approved'
+    WHERE allocation_id = $1
+    RETURNING *
+  `;
+  const result = await executeSQL(query, [allocationId]);
+  return result.rows[0] as ResourceAllocation | null;
+}
+
+export async function updateResourceAllocation(
+  allocationId: string,
+  quantityRequested: number,
+  status: string
+) {
+  const query = `
+    UPDATE resource_allocations
+    SET quantity_requested = $1,
+        allocation_status = $2
+    WHERE allocation_id = $3
+    RETURNING allocation_id, event_id, resource_id, quantity_requested, allocation_status
+  `;
+  const result = await executeSQL(query, [quantityRequested, status, allocationId]);
+  return (result.rows[0] as ResourceAllocation) || null;
 }

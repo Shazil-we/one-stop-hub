@@ -1,4 +1,4 @@
-import AllEvents from "@/components/AllEvents";
+import AllSocieties from "@/components/AllSocieties";
 
 export default async function events(){
     return(
@@ -8,7 +8,7 @@ export default async function events(){
                     Societies
                 </h1>
             </div>
-            <AllEvents/>
+            <AllSocieties/>
         </>
     )
 }

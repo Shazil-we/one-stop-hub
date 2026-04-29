@@ -3,22 +3,31 @@
 import { executeSQL } from "@/lib/db";
 
 export interface Society {
-  society_id: string;
+  society_id: number;
   society_name: string;
   description: string
   society_head_id: string;
   established_date:string;
 }
-
+export interface SocietyWithHeadName{
+  society_id: number;
+  society_name: string;
+  description: string;
+  society_head_id: string;
+  established_date:string;
+  society_head_name:string
+}
 export async function extractSocietiesFullInfo() {
   const query = `
-  SELECT society_id, society_name, description ,society_head_id , established_date
-  FROM societies`;
+  SELECT s.society_id, s.society_name, s.description, s.society_head_id, s.established_date, u.full_name AS society_head_name
+  FROM societies s
+  JOIN users u on u.user_id = s.society_head_id
+  `;
   const result = await executeSQL(query, []);
-  return result.rows as Society[];
+  return result.rows as SocietyWithHeadName[];
 }
 
-export async function extractSocietyById(id: string) {
+export async function extractSocietyById(id: number) {
     const query = `SELECT society_id, society_name, description ,society_head_id, established_date,FROM societies WHERE society_id = $1 LIMIT 1`;
     const result = await executeSQL(query, [id]);
     return (result.rows[0] as Society) || null;
@@ -40,7 +49,7 @@ export async function fetchAllSocieties() {
   return result.rows as Society[];
 }
 
-export async function fetchSocietyById(id: string) {
+export async function fetchSocietyById(id: number) {
   const query = `
     SELECT 
       s.society_id,
@@ -76,25 +85,25 @@ export async function fetchManagedSocieties(headId: string) {
 export async function extractSocietyIDByName(soc_name: string) {
   const query = `
     SELECT 
-      s.society_id
+      *
     FROM societies s
     WHERE s.society_name = $1
     LIMIT 1
   `;
   const result = await executeSQL(query, [soc_name]);
-  return result.rows[0] as string;
+  return result.rows[0] as Society;
 }
 
 export async function fetchManagedSocietyID(headId: string) {
   const query = `
     SELECT 
-      s.society_id,
+      *
     FROM societies s
     WHERE s.society_head_id = $1
     LIMIT 1
   `;
   const result = await executeSQL(query, [headId]);
-  return result.rows[0] as string;
+  return result.rows[0] as Society;
 }
 export async function searchSocieties(search: string) {
   const query = `

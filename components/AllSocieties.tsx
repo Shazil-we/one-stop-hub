@@ -16,7 +16,7 @@ const Skeleton = () => (
 );
 
 
-export default async function AllEvents() {
+export default async function AllSocieties() {
     const Societies = await fetchAllSocieties();
     return (
         <>

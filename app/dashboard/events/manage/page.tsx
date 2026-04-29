@@ -22,7 +22,7 @@ export default async function manage({
 
     return (
         <>
-            <div className="mt-18 flex flex-col max-w-7xl mx-auto">
+            <div className="mt-18 flex flex-col max-w-7xl items-center justify-center">
                 <h1 className="text-5xl md:text-7xl font-extrabold text-left">
                     Manage Events
                 </h1>

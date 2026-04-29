@@ -15,9 +15,8 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-import { createEventAction } from "@/app/actions/eventActions"
-
-export function AddEventField() {
+import { createSocietyAction } from "@/app/actions/societyAction"
+export function AddSocietyField() {
     const [societyDate, setsocietyDate] = useState<Date | undefined>(undefined);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -26,7 +25,7 @@ export function AddEventField() {
             formData.append("societyDate", societyDate.toISOString());
         }
 
-        const result = await createEventAction(formData);
+        const result = await createSocietyAction(formData);
 
         if (result.success) {
             setIsOpen(false);
@@ -64,8 +63,8 @@ export function AddEventField() {
                     </div>
 
                     <div className="grid gap-3">
-                        <Label htmlFor="venueName">Venue Name</Label>
-                        <Input id="venueName" name="venueName" placeholder="enter Venue Name" required />
+                        <Label htmlFor="HeadEmail">Head Email</Label>
+                        <Input id="HeadEmail" name="HeadEmail" placeholder="enter Head Email" required />
                     </div>
 
                     <SheetFooter className="mt-6">

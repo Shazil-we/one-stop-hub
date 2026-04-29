@@ -32,6 +32,7 @@ export const STUDENT_NAV = [
     icon: <Settings2Icon />,
     items: [
       { title: "General", url: "/dashboard/settings" },
+      { title: "Manage Users", url: "/dashboard/settings/manage-user" },
     ],
   },
 ];
@@ -63,7 +64,9 @@ export const ADMINISTRATOR_NAV = [
     icon: <MapPinIcon />,
     items: [
       { title: "View Venues", url: "/dashboard/venues" },
-      { title: "Manage Venues", url: "/dashboard/venues/manage" }
+      { title: "Manage Venues", url: "/dashboard/venues/manage" },
+      { title: "Manage Bookings", url: "/dashboard/venues/manage-bookings" }
+
     ],
   },
   {
@@ -72,7 +75,8 @@ export const ADMINISTRATOR_NAV = [
     icon: <PackageIcon />,
     items: [
       { title: "View Resources", url: "/dashboard/resources" },
-      { title: "Manage Resources", url: "/dashboard/resources/manage" }
+      { title: "Manage Resources", url: "/dashboard/resources/manage" },
+      { title: "Manage Resource Allocations", url: "/dashboard/resources/manage-allocation" }
     ],
   },
   {
@@ -80,8 +84,7 @@ export const ADMINISTRATOR_NAV = [
     url: "/dashboard/requests",
     icon: <ClipboardCheckIcon />,
     items: [
-      { title: "View requests", url: "/dashboard/requests" },
-      { title: "Manage Requests", url: "/dashboard/requests/manage" }
+      { title: "Manage Requests", url: "/dashboard/requests" }
     ],
   },
   {
@@ -120,6 +123,7 @@ export const SOCIETYHEAD_NAV = [
     icon: <PackageIcon />,
     items: [
       { title: "View Resources", url: "/dashboard/resources" },
+      { title: "Manage Resources", url: "/dashboard/resources/manage" },
       { title: "Request Resources", url: "/dashboard/resources/request" },
     ],
   },

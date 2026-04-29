@@ -1,4 +1,5 @@
 import ManageEventsTable from "@/components/ManageEventsTable";
+import ManageSocietyTable from "@/components/ManageSocietyTable";
 import { Separator } from "@/components/ui/separator";
 import { extractUserFullInfo } from "@/Queries/Users"
 
@@ -22,14 +23,14 @@ export default async function manage({
 
     return (
         <>
-            <div className="mt-18 flex flex-col max-w-7xl mx-auto">
+            <div className="mt-18 flex flex-col max-w-7xl items-center justify-center">
                 <h1 className="text-5xl md:text-7xl font-extrabold text-left">
                     Manage Societies
                 </h1>
 
                 <Separator className="my-6" />
                 
-                <ManageEventsTable searchParams={searchParams} />
+                <ManageSocietyTable searchParams={searchParams} />
             </div>
         </>
     )
