@@ -1,6 +1,7 @@
 import ManageEventsTable from "@/components/ManageEventsTable";
 import { Separator } from "@/components/ui/separator";
-import { extractUserFullInfo } from "@/Queries/Users"
+import { getCurrentUser } from "@/lib/current-user"
+import EncryptedHeading from "@/components/EncryptedHeading";
 
 // 1. Add searchParams to the page props
 export default async function manage({
@@ -8,7 +9,7 @@ export default async function manage({
 }: {
   searchParams: Promise<{ society?: string }>;
 }) {
-    const user = await extractUserFullInfo();
+    const user = await getCurrentUser();
 
     if (user?.role === "Student" || user?.role === "SocietyHead") {
         return (
@@ -24,7 +25,7 @@ export default async function manage({
         <>
             <div className="mt-18 flex flex-col max-w-7xl items-center justify-center">
                 <h1 className="text-5xl md:text-7xl font-extrabold text-left">
-                    Manage Events
+                    <EncryptedHeading text="Manage Events" />
                 </h1>
 
                 <Separator className="my-6" />

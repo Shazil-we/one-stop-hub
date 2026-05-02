@@ -8,6 +8,19 @@ export interface EventRegistration {
   user_id: string;
 }
 
+export interface UserTicket {
+  event_id: string;
+  event_name: string;
+  event_date: string;
+}
+
+export interface EventRoster {
+  user_id: string;
+  full_name: string;
+  email: string;
+}
+
+
 export async function extractEventRegistrations() {
   const query = `SELECT registration_id, event_id, user_id FROM event_registrations`;
   const result = await executeSQL(query, []);

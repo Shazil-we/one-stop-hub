@@ -129,3 +129,9 @@ export async function getVenueWithBookings(venueId: string) {
   const result = await executeSQL(query, [venueId]);
   return result.rows;
 }
+
+export async function fetchVenueCount(): Promise<number> {
+  const query = `SELECT COUNT(*) AS count FROM venues`;
+  const result = await executeSQL(query, []);
+  return parseInt(result.rows[0].count, 10);
+}

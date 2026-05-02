@@ -162,3 +162,9 @@ export async function deleteSociety(id: string) {
   await executeSQL(query, [id]);
   return { success: true };
 }
+
+export async function fetchSocietyCount(): Promise<number> {
+  const query = `SELECT COUNT(*) AS count FROM societies`;
+  const result = await executeSQL(query, []);
+  return parseInt(result.rows[0].count, 10);
+}

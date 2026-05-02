@@ -248,3 +248,13 @@ export async function deleteEvent(eventId: string) {
   await executeSQL(query, [eventId]);
   return { success: true };
 }
+
+export async function fetchEventsThisMonthCount(): Promise<number> {
+  const query = `
+    SELECT COUNT(*) AS count
+    FROM events
+    WHERE DATE_TRUNC('month', event_date) = DATE_TRUNC('month', CURRENT_DATE)
+  `;
+  const result = await executeSQL(query, []);
+  return parseInt(result.rows[0].count, 10);
+}

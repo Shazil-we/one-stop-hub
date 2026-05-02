@@ -1,7 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { executeSQL } from "@/lib/db";
-import { extractUserFullInfo } from "@/Queries/Users";
+import { getCurrentUser } from "@/lib/current-user";
 import { AppSidebar } from "@/components/app-sidebar";
 import { STUDENT_NAV, ADMINISTRATOR_NAV, SOCIETYHEAD_NAV } from "@/data/Dashboarddata";
 import {
@@ -34,7 +34,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     console.error("Failed to sync to Neon:", error);
   }
 
-  const dbUser = await extractUserFullInfo();
+  const dbUser = await getCurrentUser();
   
   const sidebarUser = {
     name: dbUser?.full_name || fullName,
@@ -52,7 +52,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   return (
     <SidebarProvider>
       {/* Pass the dynamic items into the sidebar */}
-      <AppSidebar user={sidebarUser} items={NavITEMS} />
+      <AppSidebar user={sidebarUser} />
       <SidebarInset>
         <header className="flex h-16 w-7xl shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 fixed backdrop-blur-xl z-10 max-w-8xl">
           <div className="flex items-center gap-2 px-4">
@@ -61,7 +61,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">One-Stop-Hub</BreadcrumbLink>
+                  <BreadcrumbLink href="/dashboard">One-Stop-Hub</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>

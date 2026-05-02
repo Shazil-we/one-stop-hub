@@ -34,15 +34,15 @@ export async function updateVenueRowAction(formData: FormData) {
     const locationBuilding = String(formData.get("locationBuilding"));
     const venueType = String(formData.get("venueType"));
     await updateVenue(venueId, venueName, capacity, locationBuilding, venueType);
-    revalidatePath("/dashboard/venues/manage");
-    revalidatePath("/dashboard/venues");
+    revalidatePath("/dashboard/venues/manage", "page");
+    revalidatePath("/dashboard/venues", "page");
 }
 
 export async function deleteVenueRowAction(venueId: string) {
     await requireNonStudent();
     await deleteVenue(venueId);
-    revalidatePath("/dashboard/venues/manage");
-    revalidatePath("/dashboard/venues");
+    revalidatePath("/dashboard/venues/manage", "page");
+    revalidatePath("/dashboard/venues", "page");
 }
 
 export async function updateResourceRowAction(formData: FormData) {
@@ -51,15 +51,15 @@ export async function updateResourceRowAction(formData: FormData) {
     const itemName = String(formData.get("itemName"));
     const totalInventory = Number(formData.get("totalInventory"));
     await updateResource(resourceId, itemName, totalInventory);
-    revalidatePath("/dashboard/resources/manage");
-    revalidatePath("/dashboard/resources");
+    revalidatePath("/dashboard/resources/manage", "page");
+    revalidatePath("/dashboard/resources", "page");
 }
 
 export async function deleteResourceRowAction(resourceId: string) {
     await requireNonStudent();
     await deleteResource(resourceId);
-    revalidatePath("/dashboard/resources/manage");
-    revalidatePath("/dashboard/resources");
+    revalidatePath("/dashboard/resources/manage", "page");
+    revalidatePath("/dashboard/resources", "page");
 }
 
 export async function updateEventRowAction(formData: FormData) {
@@ -69,16 +69,16 @@ export async function updateEventRowAction(formData: FormData) {
     const eventDescription = String(formData.get("eventDescription"));
     const eventDate = String(formData.get("eventDate"));
     await updateEventDetails(eventId, eventName, eventDescription, eventDate);
-    revalidatePath("/dashboard/events/manage");
-    revalidatePath("/dashboard/events");
-    revalidatePath("/dashboard/venues/manage-bookings");
+    revalidatePath("/dashboard/events/manage", "page");
+    revalidatePath("/dashboard/events", "page");
+    revalidatePath("/dashboard/venues/manage-bookings", "page");
 }
 
 export async function deleteEventRowAction(eventId: string) {
     await requireAdmin();
     await deleteEvent(eventId);
-    revalidatePath("/dashboard/events/manage");
-    revalidatePath("/dashboard/events");
+    revalidatePath("/dashboard/events/manage", "page");
+    revalidatePath("/dashboard/events", "page");
 }
 
 export async function updateSocietyRowAction(formData: FormData) {
@@ -88,15 +88,15 @@ export async function updateSocietyRowAction(formData: FormData) {
     const description = String(formData.get("description"));
     const societyHeadId = String(formData.get("societyHeadId"));
     await updateSociety(societyId, societyName, description, societyHeadId);
-    revalidatePath("/dashboard/societies/manage");
-    revalidatePath("/dashboard/societies");
+    revalidatePath("/dashboard/societies/manage", "page");
+    revalidatePath("/dashboard/societies", "page");
 }
 
 export async function deleteSocietyRowAction(societyId: string) {
     await requireNonStudent();
     await deleteSociety(societyId);
-    revalidatePath("/dashboard/societies/manage");
-    revalidatePath("/dashboard/societies");
+    revalidatePath("/dashboard/societies/manage", "page");
+    revalidatePath("/dashboard/societies", "page");
 }
 
 export async function updateUserRowAction(formData: FormData) {
@@ -106,14 +106,14 @@ export async function updateUserRowAction(formData: FormData) {
     const email = String(formData.get("email"));
     const role = String(formData.get("role")) as "Student" | "SocietyHead" | "Administrator";
     await updateUserByUserID(userId, fullName, email, role);
-    revalidatePath("/dashboard/settings/manage-user");
-    revalidatePath("/dashboard/settings");
+    revalidatePath("/dashboard/settings/manage-user", "page");
+    revalidatePath("/dashboard/settings", "page");
 }
 
 export async function deleteUserRowAction(userId: string) {
     await requireAdmin();
     await deleteUserByUserID(userId);
-    revalidatePath("/dashboard/settings/manage-user");
+    revalidatePath("/dashboard/settings/manage-user", "page");
 }
 
 export async function updateRequestRowAction(formData: FormData) {
@@ -122,14 +122,14 @@ export async function updateRequestRowAction(formData: FormData) {
     const requestedRole = String(formData.get("requestedRole")) as "Administrator" | "SocietyHead";
     const status = String(formData.get("status"));
     await updateRequest(requestId, requestedRole, status);
-    revalidatePath("/dashboard/requests");
-    revalidatePath("/dashboard/settings");
+    revalidatePath("/dashboard/requests", "page");
+    revalidatePath("/dashboard/settings", "page");
 }
 
 export async function deleteRequestRowAction(requestId: string) {
     await requireAdmin();
     await deleteRequest(requestId);
-    revalidatePath("/dashboard/requests");
+    revalidatePath("/dashboard/requests", "page");
 }
 
 export async function updateBookingRowAction(formData: FormData) {
@@ -137,13 +137,13 @@ export async function updateBookingRowAction(formData: FormData) {
     const bookingId = String(formData.get("bookingId"));
     const status = String(formData.get("status"));
     await updateBookingStatus(bookingId, status, admin.user_id);
-    revalidatePath("/dashboard/venues/manage-bookings");
+    revalidatePath("/dashboard/venues/manage-bookings", "page");
 }
 
 export async function deleteBookingRowAction(bookingId: string) {
     await requireAdmin();
     await deleteVenueBooking(bookingId);
-    revalidatePath("/dashboard/venues/manage-bookings");
+    revalidatePath("/dashboard/venues/manage-bookings", "page");
 }
 
 export async function updateAllocationRowAction(formData: FormData) {
@@ -152,12 +152,12 @@ export async function updateAllocationRowAction(formData: FormData) {
     const quantityRequested = Number(formData.get("quantityRequested"));
     const status = String(formData.get("status"));
     await updateResourceAllocation(allocationId, quantityRequested, status);
-    revalidatePath("/dashboard/resources/manage-allocation");
-    revalidatePath("/dashboard/resources");
+    revalidatePath("/dashboard/resources/manage-allocation", "page");
+    revalidatePath("/dashboard/resources", "page");
 }
 
 export async function deleteAllocationRowAction(allocationId: string) {
     await requireAdmin();
     await deleteAllocation(allocationId);
-    revalidatePath("/dashboard/resources/manage-allocation");
+    revalidatePath("/dashboard/resources/manage-allocation", "page");
 }

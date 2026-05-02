@@ -1,11 +1,11 @@
 import { extractResources } from "@/Queries/Resources";
 import { fetchSocietyEvents } from "@/Queries/Events";
 import { fetchManagedSocietyID } from "@/Queries/Societies";
-import { extractUserFullInfo } from "@/Queries/Users";
+import { getCurrentUser } from "@/lib/current-user";
 import { AllocateResourceField } from "./AllocateResourceField";
 
 export default async function AllocateResourceButton() {
-    const user = await extractUserFullInfo();
+    const user = await getCurrentUser();
 
     if (!user || user.role !== "SocietyHead") {
         return null;

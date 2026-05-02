@@ -14,31 +14,41 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet";
 import { createResourceAction } from "@/app/actions/resourceAction";
+import { MultiStepLoader } from "@/components/ui/multi-step-loader";
+import { dbLoaderStates } from "@/components/ui/db-loader-states";
 
 export function AddResourceField() {
     const [isOpen, setIsOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (formData: FormData) => {
-        const result = await createResourceAction(formData);
+        setIsLoading(true);
+        try {
+            const result = await createResourceAction(formData);
 
-        if (result.success) {
-            setIsOpen(false);
-        } else {
-            console.error("Failed to create resource:", result.error);
+            if (result.success) {
+                setIsOpen(false);
+            } else {
+                console.error("Failed to create resource:", result.error);
+            }
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild>
-                <Button variant="outline" className="ml-4">Add Resource</Button>
-            </SheetTrigger>
-            <SheetContent>
-                <SheetHeader>
-                    <SheetTitle>Add Resource</SheetTitle>
-                </SheetHeader>
+        <>
+            <MultiStepLoader loadingStates={dbLoaderStates} loading={isLoading} />
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+                <SheetTrigger asChild>
+                    <Button variant="outline" className="ml-4">Add Resource</Button>
+                </SheetTrigger>
+                <SheetContent>
+                    <SheetHeader>
+                        <SheetTitle>Add Resource</SheetTitle>
+                    </SheetHeader>
 
-                <form action={handleSubmit} className="grid flex-1 auto-rows-min gap-6 px-4 mt-6">
+                    <form action={handleSubmit} className="grid flex-1 auto-rows-min gap-6 px-4 mt-6">
                     <div className="grid gap-3">
                         <Label htmlFor="itemName">Resource Name</Label>
                         <Input id="itemName" name="itemName" placeholder="enter resource name" required />
@@ -56,14 +66,15 @@ export function AddResourceField() {
                         />
                     </div>
 
-                    <SheetFooter className="mt-6">
-                        <Button type="submit">Save changes</Button>
-                        <SheetClose asChild>
-                            <Button variant="outline" type="button">Close</Button>
-                        </SheetClose>
-                    </SheetFooter>
-                </form>
-            </SheetContent>
-        </Sheet>
+                        <SheetFooter className="mt-6">
+                            <Button type="submit">Save changes</Button>
+                            <SheetClose asChild>
+                                <Button variant="outline" type="button">Close</Button>
+                            </SheetClose>
+                        </SheetFooter>
+                    </form>
+                </SheetContent>
+            </Sheet>
+        </>
     );
 }

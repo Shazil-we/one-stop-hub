@@ -1,11 +1,9 @@
 import { executeSQL } from '@/lib/db'
-import { Venues } from './Queries/Venues'
+import { extractVenues } from './Queries/Venues'
 export default async function VenuesPage() {
-  const fetchVenuesSql = Venues[0].query
-  let venues = []
+  let venues: Awaited<ReturnType<typeof extractVenues>> = []
   try {
-    const result = await executeSQL(fetchVenuesSql, [])
-    venues = result.rows // The array of data objects
+    venues = await extractVenues()
   } catch (error) {
     console.error("Failed to fetch venues:", error)
   }
@@ -18,7 +16,7 @@ export default async function VenuesPage() {
         {venues.map((venue) => (
           <div key={venue.venue_id} className="border p-4 rounded-lg shadow-sm">
             <h2 className="text-xl font-semibold">{venue.venue_name}</h2> 
-            <p className="text-gray-600">Block: {venue.location_block}</p>
+            <p className="text-gray-600">Block: {venue.location_building}</p>
             <p className="text-gray-600">Capacity: {venue.capacity} seats</p>
           </div>
         ))}

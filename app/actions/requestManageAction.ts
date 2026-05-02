@@ -29,8 +29,8 @@ export async function approveRequestAction(requestId: string) {
     );
     await approveRequest(requestId, admin.user_id);
 
-    revalidatePath("/dashboard/requests");
-    revalidatePath("/dashboard/settings");
+    revalidatePath("/dashboard/requests", "page");
+    revalidatePath("/dashboard/settings", "page");
 
     return { success: true };
 }

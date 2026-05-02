@@ -5,13 +5,26 @@
 
 @layer base {
   :root {
-    --background: #E4EEF1;
-    --foreground: #0E1B1B;
+    --background: #E0E0E0;
+    --foreground: #03243A;
+    --card: #ffffff;
+    --card-foreground: #0E1B1B;
+    --muted: #d6e1e4;
+    --muted-foreground: #3b4b4b;
+    --border: #c9d5d8;
+    --input: #c9d5d8;
   }
 
+  :root.dark,
   .dark {
-    --background: #131313;
-    --foreground: #DCE5DE;
+    --background: #0A151F;
+    --foreground: #C2FFE7;
+    --card: #2f1d32;
+    --card-foreground: #DCE5DE;
+    --muted: #3a2a3d;
+    --muted-foreground: #b6c0b7;
+    --border: #4a3a4d;
+    --input: #4a3a4d;
   }
 }
 @theme inline {
@@ -28,6 +41,7 @@
     transform: translate(-50%, -40%) scale(1);
   }
 }
+html,
 body {
   background-color: var(--background);
   color: var(--foreground);

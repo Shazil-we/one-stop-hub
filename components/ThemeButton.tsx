@@ -42,13 +42,13 @@ export function ThemeButton() {
           setIsRotating(!isRotating);
           setTheme(theme === 'dark' ? 'light' : 'dark')
         }}
-        className="h-10 w-10 rounded-full transition-all duration-300 hover:scale-120 bg-blue-800 dark:bg-amber-400 cursor-pointer"
+        className="h-10 w-10 rounded-full transition-all duration-300 hover:scale-120 bg-blue-950 dark:bg-cyan-200 cursor-pointer"
         aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
       >
         {theme === 'dark' ? (
           <Sun className="h-6 w-6 transition-all text-black" />
         ) : (
-          <Moon className="h-6 w-6  transition-all" />
+          <Moon className="h-6 w-6  transition-all text-white" />
         )}
       </Button>
     </motion.div>

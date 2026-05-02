@@ -1,7 +1,7 @@
 import { AddEventField } from './AddEventField';
-import { extractUserFullInfo } from '@/Queries/Users';
+import { getCurrentUser } from '@/lib/current-user';
 export default async function ManageEventsButton() {
-    const user = (await extractUserFullInfo())!;
+    const user = (await getCurrentUser())!;
      return (
         <>
             <div className="z-50">

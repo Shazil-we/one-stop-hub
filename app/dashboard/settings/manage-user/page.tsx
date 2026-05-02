@@ -1,13 +1,14 @@
 import ManageUsersTable from "@/components/ManageUsersTable";
 import { Separator } from "@/components/ui/separator";
-import { extractUserFullInfo } from "@/Queries/Users";
+import { getCurrentUser } from "@/lib/current-user";
+import EncryptedHeading from "@/components/EncryptedHeading";
 
 export default async function manageUser({
     searchParams,
 }: {
     searchParams: Promise<{ user?: string }>;
 }) {
-    const user = await extractUserFullInfo();
+    const user = await getCurrentUser();
 
     if (user?.role !== "Administrator") {
         return (
@@ -23,7 +24,7 @@ export default async function manageUser({
         <>
             <div className="mt-18 flex flex-col max-w-7xl items-center justify-center">
                 <h1 className="text-5xl md:text-7xl font-extrabold text-left">
-                    Manage Users
+                    <EncryptedHeading text="Manage Users" />
                 </h1>
 
                 <Separator className="my-6" />

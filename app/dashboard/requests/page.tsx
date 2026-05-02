@@ -1,9 +1,10 @@
 import ManageRequestsTable from "@/components/ManageRequestsTable";
 import { Separator } from "@/components/ui/separator";
-import { extractUserFullInfo } from "@/Queries/Users";
+import { getCurrentUser } from "@/lib/current-user";
+import EncryptedHeading from "@/components/EncryptedHeading";
 
 export default async function requestsPage() {
-    const user = await extractUserFullInfo();
+    const user = await getCurrentUser();
 
     if (user?.role !== "Administrator") {
         return (
@@ -19,7 +20,7 @@ export default async function requestsPage() {
         <>
             <div className="mt-18 flex flex-col max-w-7xl items-center justify-center">
                 <h1 className="text-5xl md:text-7xl font-extrabold text-left">
-                    Manage Requests
+                    <EncryptedHeading text="Manage Requests" />
                 </h1>
 
                 <Separator className="my-6" />

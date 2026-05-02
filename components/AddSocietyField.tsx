@@ -16,35 +16,45 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import { createSocietyAction } from "@/app/actions/societyAction"
+import { MultiStepLoader } from "@/components/ui/multi-step-loader"
+import { dbLoaderStates } from "@/components/ui/db-loader-states"
 export function AddSocietyField() {
     const [societyDate, setsocietyDate] = useState<Date | undefined>(undefined);
     const [isOpen, setIsOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (formData: FormData) => {
+        setIsLoading(true);
         if (societyDate) {
             formData.append("societyDate", societyDate.toISOString());
         }
 
-        const result = await createSocietyAction(formData);
+        try {
+            const result = await createSocietyAction(formData);
 
-        if (result.success) {
-            setIsOpen(false);
-        } else {
-            console.error("Failed to create event:", result.error);
+            if (result.success) {
+                setIsOpen(false);
+            } else {
+                console.error("Failed to create event:", result.error);
+            }
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild>
-                <Button variant="outline" className="ml-4">Add Society</Button>
-            </SheetTrigger>
-            <SheetContent>
-                <SheetHeader>
-                    <SheetTitle>Add Society</SheetTitle>
-                </SheetHeader>
+        <>
+            <MultiStepLoader loadingStates={dbLoaderStates} loading={isLoading} />
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+                <SheetTrigger asChild>
+                    <Button variant="outline" className="ml-4">Add Society</Button>
+                </SheetTrigger>
+                <SheetContent>
+                    <SheetHeader>
+                        <SheetTitle>Add Society</SheetTitle>
+                    </SheetHeader>
 
-                <form action={handleSubmit} className="grid flex-1 auto-rows-min gap-6 px-4 mt-6">
+                    <form action={handleSubmit} className="grid flex-1 auto-rows-min gap-6 px-4 mt-6">
                     <div className="grid gap-3">
                         <Label htmlFor="societyName">Society Name</Label>
                         <Input id="societyName" name="societyName" placeholder="enter society name" required />
@@ -67,14 +77,15 @@ export function AddSocietyField() {
                         <Input id="HeadEmail" name="HeadEmail" placeholder="enter Head Email" required />
                     </div>
 
-                    <SheetFooter className="mt-6">
-                        <Button type="submit">Save changes</Button>
-                        <SheetClose asChild>
-                            <Button variant="outline" type="button">Close</Button>
-                        </SheetClose>
-                    </SheetFooter>
-                </form>
-            </SheetContent>
-        </Sheet>
+                        <SheetFooter className="mt-6">
+                            <Button type="submit">Save changes</Button>
+                            <SheetClose asChild>
+                                <Button variant="outline" type="button">Close</Button>
+                            </SheetClose>
+                        </SheetFooter>
+                    </form>
+                </SheetContent>
+            </Sheet>
+        </>
     )
 }

@@ -16,38 +16,48 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import { createEventAction } from "@/app/actions/eventActions"
+import { MultiStepLoader } from "@/components/ui/multi-step-loader"
+import { dbLoaderStates } from "@/components/ui/db-loader-states"
 
 // Add a prop interface so the component knows the user's role
 export function AddEventField({ userRole }: { userRole: string }) {
     console.log("The role received by AddEventField is:", userRole);
     const [eventDate, setEventDate] = useState<Date | undefined>(undefined);
     const [isOpen, setIsOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (formData: FormData) => {
+        setIsLoading(true);
         if (eventDate) {
             formData.append("eventDate", eventDate.toISOString());
         }
 
-        const result = await createEventAction(formData);
+        try {
+            const result = await createEventAction(formData);
 
-        if (result.success) {
-            setIsOpen(false);
-        } else {
-            console.error("Failed to create event:", result.error);
+            if (result.success) {
+                setIsOpen(false);
+            } else {
+                console.error("Failed to create event:", result.error);
+            }
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild>
-                <Button variant="outline" className="ml-4">Add Event</Button>
-            </SheetTrigger>
-            <SheetContent>
-                <SheetHeader>
-                    <SheetTitle>Add Event</SheetTitle>
-                </SheetHeader>
+        <>
+            <MultiStepLoader loadingStates={dbLoaderStates} loading={isLoading} />
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+                <SheetTrigger asChild>
+                    <Button variant="outline" className="ml-4">Add Event</Button>
+                </SheetTrigger>
+                <SheetContent>
+                    <SheetHeader>
+                        <SheetTitle>Add Event</SheetTitle>
+                    </SheetHeader>
 
-                <form action={handleSubmit} className="grid flex-1 auto-rows-min gap-6 px-4 mt-6">
+                    <form action={handleSubmit} className="grid flex-1 auto-rows-min gap-6 px-4 mt-6">
                     <div className="grid gap-3">
                         <Label htmlFor="eventName">Event Name</Label>
                         <Input id="eventName" name="eventName" placeholder="enter event name" required />
@@ -77,14 +87,15 @@ export function AddEventField({ userRole }: { userRole: string }) {
                         <Input id="venueName" name="venueName" placeholder="enter Venue Name" required />
                     </div>
 
-                    <SheetFooter className="mt-6">
-                        <Button type="submit">Save changes</Button>
-                        <SheetClose asChild>
-                            <Button variant="outline" type="button">Close</Button>
-                        </SheetClose>
-                    </SheetFooter>
-                </form>
-            </SheetContent>
-        </Sheet>
+                        <SheetFooter className="mt-6">
+                            <Button type="submit">Save changes</Button>
+                            <SheetClose asChild>
+                                <Button variant="outline" type="button">Close</Button>
+                            </SheetClose>
+                        </SheetFooter>
+                    </form>
+                </SheetContent>
+            </Sheet>
+        </>
     )
 }

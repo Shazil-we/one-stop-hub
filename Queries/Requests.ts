@@ -5,7 +5,7 @@ import { executeSQL } from "@/lib/db";
 export interface Requests {
   request_id: number;
   user_id: string;
-  requested_role: string;
+  requested_role: "Administrator" | "SocietyHead";
   status: string;
   reviewed_by: string | null;
   created_at: string;

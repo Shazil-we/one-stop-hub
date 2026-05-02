@@ -1,4 +1,3 @@
-import { extractUserFullInfo } from '@/Queries/Users';
 import { AddSocietyField } from './AddSocietyField';
 export default async function ManageSocietyButton() {
      return (

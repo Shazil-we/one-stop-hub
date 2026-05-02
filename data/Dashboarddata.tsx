@@ -15,7 +15,6 @@ export const STUDENT_NAV = [
     isActive: true,
     items: [
       { title: "View Events", url: "/dashboard/events" },
-      { title: "My Tickets", url: "/dashboard/events/mytickets" },
     ],
   },
   {
@@ -45,7 +44,6 @@ export const ADMINISTRATOR_NAV = [
     isActive: true,
     items: [
       { title: "View Events", url: "/dashboard/events" },
-      { title: "My Tickets", url: "/dashboard/events/mytickets" },
       { title: "Manage Events", url: "/dashboard/events/manage" }
     ],
   },
@@ -106,7 +104,6 @@ export const SOCIETYHEAD_NAV = [
     items: [
       { title: "View Events", url: "/dashboard/events" },
       { title: "Manage Events", url: "/dashboard/events/manage" },
-      { title: "My Tickets", url: "/dashboard/events/mytickets" },
     ],
   },
   {

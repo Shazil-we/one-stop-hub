@@ -1,13 +1,14 @@
 import ManageResourceTable from "@/components/ManageResourceTable";
 import { Separator } from "@/components/ui/separator";
-import { extractUserFullInfo } from "@/Queries/Users";
+import { getCurrentUser } from "@/lib/current-user";
+import EncryptedHeading from "@/components/EncryptedHeading";
 
 export default async function manage({
     searchParams,
 }: {
     searchParams: Promise<{ resource?: string }>;
 }) {
-    const user = await extractUserFullInfo();
+    const user = await getCurrentUser();
 
     if (user?.role === "Student") {
         return (
@@ -23,7 +24,7 @@ export default async function manage({
         <>
             <div className="mt-18 flex flex-col max-w-7xl items-center justify-center">
                 <h1 className="text-5xl md:text-7xl font-extrabold">
-                    Manage Resources
+                    <EncryptedHeading text="Manage Resources" />
                 </h1>
 
                 <Separator className="my-6" />

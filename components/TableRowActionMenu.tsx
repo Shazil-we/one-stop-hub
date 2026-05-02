@@ -16,6 +16,8 @@ import {
     SheetHeader,
     SheetTitle,
 } from "@/components/ui/sheet";
+import { MultiStepLoader } from "@/components/ui/multi-step-loader";
+import { dbLoaderStates } from "@/components/ui/db-loader-states";
 
 export default function TableRowActionMenu({
     sheetTitle,
@@ -33,6 +35,7 @@ export default function TableRowActionMenu({
 
     return (
         <>
+            <MultiStepLoader loadingStates={dbLoaderStates} loading={isPending} />
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="icon" aria-label="Row actions">
