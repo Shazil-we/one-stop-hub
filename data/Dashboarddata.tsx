@@ -31,7 +31,6 @@ export const STUDENT_NAV = [
     icon: <Settings2Icon />,
     items: [
       { title: "General", url: "/dashboard/settings" },
-      { title: "Manage Users", url: "/dashboard/settings/manage-user" },
     ],
   },
 ];
@@ -91,6 +90,7 @@ export const ADMINISTRATOR_NAV = [
     icon: <Settings2Icon />,
     items: [
       { title: "General", url: "/dashboard/settings" },
+      { title: "Manage Users", url: "/dashboard/settings/manage-user" },
     ],
   },
 ];
@@ -103,7 +103,7 @@ export const SOCIETYHEAD_NAV = [
     isActive: true,
     items: [
       { title: "View Events", url: "/dashboard/events" },
-      { title: "Manage Events", url: "/dashboard/events/manage" },
+      { title: "Book Events", url: "/dashboard/venues/book" }
     ],
   },
   {
@@ -120,8 +120,6 @@ export const SOCIETYHEAD_NAV = [
     icon: <PackageIcon />,
     items: [
       { title: "View Resources", url: "/dashboard/resources" },
-      { title: "Manage Resources", url: "/dashboard/resources/manage" },
-      { title: "Request Resources", url: "/dashboard/resources/request" },
     ],
   },
   {
@@ -130,7 +128,6 @@ export const SOCIETYHEAD_NAV = [
     icon: <MapPinIcon />,
     items: [
       { title: "View Venues", url: "/dashboard/venues" },
-      { title: "Book Venues", url: "/dashboard/venues/book" }
     ],
   },
   {

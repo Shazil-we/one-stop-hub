@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, ReactNode } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -20,7 +20,7 @@ import { MultiStepLoader } from "@/components/ui/multi-step-loader"
 import { dbLoaderStates } from "@/components/ui/db-loader-states"
 
 // Add a prop interface so the component knows the user's role
-export function AddEventField({ userRole }: { userRole: string }) {
+export function AddEventField({ userRole, customTrigger }: { userRole: string, customTrigger?: ReactNode }) {
     console.log("The role received by AddEventField is:", userRole);
     const [eventDate, setEventDate] = useState<Date | undefined>(undefined);
     const [isOpen, setIsOpen] = useState(false);
@@ -51,7 +51,7 @@ export function AddEventField({ userRole }: { userRole: string }) {
             <MultiStepLoader loadingStates={dbLoaderStates} loading={isLoading} />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
                 <SheetTrigger asChild>
-                    <Button variant="outline" className="ml-4">Add Event</Button>
+                    {customTrigger ? customTrigger : <Button variant="outline" className="ml-4">Add Event</Button>}
                 </SheetTrigger>
                 <SheetContent>
                     <SheetHeader>
