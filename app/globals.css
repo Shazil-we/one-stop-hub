@@ -7,27 +7,36 @@
   :root {
     --background: #E0E0E0;
     --foreground: #03243A;
-    --card: #ffffff;
+    --card: transparent;
     --card-foreground: #0E1B1B;
-    --muted: #d6e1e4;
+    --popover: #ffffff;
+    --popover-foreground: #03243A;
+    --muted: rgba(0, 0, 0, 0.05);
     --muted-foreground: #3b4b4b;
-    --border: #c9d5d8;
-    --input: #c9d5d8;
+    --border: rgba(0, 0, 0, 0.1);
+    --input: rgba(0, 0, 0, 0.1);
   }
 
   :root.dark,
   .dark {
-    --background: #0A151F;
+    --background: #010303;
     --foreground: #C2FFE7;
-    --card: #2f1d32;
+    --card: transparent;
     --card-foreground: #DCE5DE;
-    --muted: #3a2a3d;
+    --popover: #000000;
+    --popover-foreground: #C2FFE7;
+    --muted: rgba(255, 255, 255, 0.05);
     --muted-foreground: #b6c0b7;
-    --border: #4a3a4d;
-    --input: #4a3a4d;
+    --border: rgba(255, 255, 255, 0.1);
+    --input: rgba(255, 255, 255, 0.1);
   }
 }
 @theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
   --animate-spotlight: spotlight 2s ease 0.75s 1 forwards;
 }
  

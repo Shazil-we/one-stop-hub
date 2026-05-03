@@ -8,7 +8,8 @@ type DashboardHeroProps = {
 
 export default function DashboardHero({ fullName }: DashboardHeroProps) {
   return (
-    <div className="relative flex h-[30rem] w-full overflow-hidden rounded-md bg-gradient-to-b from-muted/40 to-background antialiased md:items-center md:justify-center">
+    <div className="relative flex h-[30rem] w-full overflow-hidden rounded-md bg-transparent antialiased md:items-center md:justify-center">
+      
       <div className="relative z-10 mx-auto w-full max-w-7xl p-4 pt-20 md:pt-0">
         <h1 className="text-center text-4xl font-extrabold md:text-7xl p-4">
           <EncryptedText

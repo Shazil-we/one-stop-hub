@@ -20,17 +20,20 @@ export interface EventWithSocietyAndVenue{
   status:string
   society_name:string
   venue_name:string;
-  
+  logo_base64: string | null;
 }
 export interface EventWithSociety extends Event {
     society_name: string;
+    logo_base64: string | null;
 }
 export async function extractEvents() {
   const query = `
-  SELECT event_id, event_name, event_description,event_date,society_id,venue_id,status
-  FROM events`;
+  SELECT e.event_id, e.event_name, e.event_description, e.event_date, e.society_id, e.venue_id, e.status,
+         s.society_name, s.logo_base64
+  FROM events e
+  LEFT JOIN societies s ON e.society_id = s.society_id`;
   const result = await executeSQL(query, []);
-  return result.rows as Event[];
+  return result.rows as EventWithSociety[];
 }
 export async function extractEventID(name:string, venue:number){
   const query = `
@@ -69,7 +72,8 @@ export async function fetchUpcomingEvents() {
       e.society_id,
       e.venue_id,
       e.status,
-      s.society_name
+      s.society_name,
+      s.logo_base64
     FROM events e
     JOIN societies s ON e.society_id = s.society_id
     WHERE e.event_date >= CURRENT_DATE
@@ -89,7 +93,8 @@ export async function fetchEventDetails(eventId: string) {
       e.society_id,
       e.venue_id,
       e.status,
-      s.society_name
+      s.society_name,
+      s.logo_base64
     FROM events e
     JOIN societies s ON e.society_id = s.society_id
     WHERE e.event_id = $1
@@ -108,6 +113,7 @@ export async function fetchAllEvents(Sname: string) {
       e.event_date,
       e.status,
       s.society_name,
+      s.logo_base64,
     	v.venue_name
     FROM events e
     JOIN societies s ON e.society_id = s.society_id
@@ -145,7 +151,8 @@ export async function fetchPastEvents() {
       e.society_id,
       e.venue_id,
       e.status,
-      s.society_name
+      s.society_name,
+      s.logo_base64
     FROM events e
     JOIN societies s ON e.society_id = s.society_id
     WHERE e.event_date < CURRENT_DATE
@@ -165,7 +172,8 @@ export async function fetchEventsByStatus(status: string) {
       e.society_id,
       e.venue_id,
       e.status,
-      s.society_name
+      s.society_name,
+      s.logo_base64
     FROM events e
     JOIN societies s ON e.society_id = s.society_id
     WHERE e.status = $1

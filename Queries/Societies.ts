@@ -8,6 +8,7 @@ export interface Society {
   description: string
   society_head_id: string;
   established_date:string;
+  logo_base64: string | null;
 }
 export interface SocietyWithHeadName{
   society_id: number;
@@ -15,20 +16,22 @@ export interface SocietyWithHeadName{
   description: string;
   society_head_id: string;
   established_date:string;
-  society_head_name:string
+  society_head_name:string;
+  society_head_email?:string;
+  logo_base64: string | null;
 }
 export async function extractSocietiesFullInfo() {
   const query = `
-  SELECT s.society_id, s.society_name, s.description, s.society_head_id, s.established_date, u.full_name AS society_head_name
+  SELECT s.society_id, s.society_name, s.description, s.society_head_id, s.established_date, s.logo_base64, u.full_name AS society_head_name, u.email AS society_head_email
   FROM societies s
-  JOIN users u on u.user_id = s.society_head_id
+  LEFT JOIN users u on u.user_id = s.society_head_id
   `;
   const result = await executeSQL(query, []);
   return result.rows as SocietyWithHeadName[];
 }
 
 export async function extractSocietyById(id: number) {
-    const query = `SELECT society_id, society_name, description ,society_head_id, established_date,FROM societies WHERE society_id = $1 LIMIT 1`;
+    const query = `SELECT society_id, society_name, description, society_head_id, established_date, logo_base64 FROM societies WHERE society_id = $1 LIMIT 1`;
     const result = await executeSQL(query, [id]);
     return (result.rows[0] as Society) || null;
   }
@@ -41,6 +44,7 @@ export async function fetchAllSocieties() {
       s.description,
       s.society_head_id,
       s.established_date,
+      s.logo_base64,
       u.full_name AS head_name
     FROM societies s
     LEFT JOIN users u ON s.society_head_id = u.user_id
@@ -57,6 +61,7 @@ export async function fetchSocietyById(id: number) {
       s.description,
       s.society_head_id,
       s.established_date,
+      s.logo_base64,
       u.full_name AS head_name
     FROM societies s
     LEFT JOIN users u ON s.society_head_id = u.user_id
@@ -74,7 +79,8 @@ export async function fetchManagedSocieties(headId: string) {
       s.society_name,
       s.description,
       s.society_head_id,
-      s.established_date
+      s.established_date,
+      s.logo_base64
     FROM societies s
     WHERE s.society_head_id = $1
     LIMIT 1
@@ -113,6 +119,7 @@ export async function searchSocieties(search: string) {
       s.description,
       s.society_head_id,
       s.established_date,
+      s.logo_base64,
       u.full_name AS head_name
     FROM societies s
     LEFT JOIN users u ON s.society_head_id = u.user_id
@@ -125,14 +132,15 @@ export async function searchSocieties(search: string) {
 export async function createSociety(
   name: string,
   description: string,
-  headId: string,
-  establishedDate: string
+  headId: string | null,
+  establishedDate: string,
+  logoBase64?: string | null
 ) {
   const query = `
-    INSERT INTO societies (society_name, description, society_head_id, established_date)
-    VALUES ($1, $2, $3, $4::DATE)
+    INSERT INTO societies (society_name, description, society_head_id, established_date, logo_base64)
+    VALUES ($1, $2, $3, $4::DATE, $5)
   `;
-  const result = await executeSQL(query, [name, description, headId, establishedDate]);
+  const result = await executeSQL(query, [name, description, headId, establishedDate, logoBase64 ?? null]);
   return result.rows[0] as Society;
 }
 
@@ -140,17 +148,19 @@ export async function updateSociety(
   id: string,
   name: string,
   description: string,
-  headId: string
+  headId: string | null,
+  logoBase64?: string | null
 ) {
   const query = `
     UPDATE societies
     SET 
       society_name = $1,
       description = $2,
-      society_head_id = $3
+      society_head_id = $3,
+      logo_base64 = COALESCE($5, logo_base64)
     WHERE society_id = $4
   `;
-  const result = await executeSQL(query, [name, description, headId, id]);
+  const result = await executeSQL(query, [name, description, headId, id, logoBase64 ?? null]);
   return result.rows[0] as Society;
 }
 

@@ -46,7 +46,7 @@ export default async function ManageSocietyTable({
                                     <TableCell>{Society.society_name}</TableCell>
                                     <TableCell>{Society.society_head_name}</TableCell>
                                     <TableCell>{new Date(Society.established_date).toLocaleDateString()}</TableCell>
-                                    <TableCell><SocietyRowActions society={Society} /></TableCell>
+                                    <TableCell><SocietyRowActions society={{ ...Society, logo_base64: Society.logo_base64 ?? null, society_head_email: Society.society_head_email ?? "" }} /></TableCell>
                                 </TableRow>
                             )
                         })}     

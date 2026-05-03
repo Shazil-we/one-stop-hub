@@ -9,17 +9,23 @@ export async function createSocietyAction(formData: FormData) {
   const headEmail = formData.get("HeadEmail") as string;
   const societyDateRaw = formData.get("societyDate") as string;
 
-  if (!societyName || !societyDescription || !headEmail || !societyDateRaw) {
+  if (!societyName || !societyDescription || !societyDateRaw) {
       return { success: false, error: "Missing required fields" };
   }
 
-  const head = await extractSocHeadIDByEmail(headEmail);
+  // Head email is optional — resolve to a user ID or leave null
+  let headId: string | null = null;
+  if (headEmail && headEmail.trim() !== "") {
+    const head = await extractSocHeadIDByEmail(headEmail.trim());
+    headId = head?.user_id ?? null;
+  }
 
   await createSociety(
       societyName,
       societyDescription,
-      head.user_id,
-      societyDateRaw
+      headId,
+      societyDateRaw,
+      null // Logo upload removed, to be hardcoded later
   );
 
   return { success: true };

@@ -9,6 +9,7 @@ import { deleteUserByUserID, extractUserFullInfo, updateUserByUserID } from "@/Q
 import { deleteRequest, updateRequest } from "@/Queries/Requests";
 import { deleteVenueBooking, updateBookingStatus } from "@/Queries/Venue_Bookings";
 import { deleteAllocation, updateResourceAllocation } from "@/Queries/Resource_Allocations";
+import { extractSocHeadIDByEmail } from "@/Queries/Users";
 
 async function requireNonStudent() {
     const user = await extractUserFullInfo();
@@ -86,8 +87,15 @@ export async function updateSocietyRowAction(formData: FormData) {
     const societyId = String(formData.get("societyId"));
     const societyName = String(formData.get("societyName"));
     const description = String(formData.get("description"));
-    const societyHeadId = String(formData.get("societyHeadId"));
-    await updateSociety(societyId, societyName, description, societyHeadId);
+    const societyHeadEmail = String(formData.get("societyHeadEmail"));
+
+    let headId: string | null = null;
+    if (societyHeadEmail && societyHeadEmail.trim() !== "") {
+        const head = await extractSocHeadIDByEmail(societyHeadEmail.trim());
+        headId = head?.user_id ?? null;
+    }
+
+    await updateSociety(societyId, societyName, description, headId, null);
     revalidatePath("/dashboard/societies/manage", "page");
     revalidatePath("/dashboard/societies", "page");
 }

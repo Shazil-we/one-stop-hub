@@ -18,10 +18,13 @@ import {
 import { createSocietyAction } from "@/app/actions/societyAction"
 import { MultiStepLoader } from "@/components/ui/multi-step-loader"
 import { dbLoaderStates } from "@/components/ui/db-loader-states"
+
+
 export function AddSocietyField() {
     const [societyDate, setsocietyDate] = useState<Date | undefined>(undefined);
     const [isOpen, setIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
 
     const handleSubmit = async (formData: FormData) => {
         setIsLoading(true);
@@ -29,13 +32,16 @@ export function AddSocietyField() {
             formData.append("societyDate", societyDate.toISOString());
         }
 
+
         try {
+            // Artificial delay so the loader can be seen
+            await new Promise(resolve => setTimeout(resolve, 1000));
             const result = await createSocietyAction(formData);
 
             if (result.success) {
                 setIsOpen(false);
             } else {
-                console.error("Failed to create event:", result.error);
+                console.error("Failed to create society:", result.error);
             }
         } finally {
             setIsLoading(false);
@@ -73,9 +79,14 @@ export function AddSocietyField() {
                     </div>
 
                     <div className="grid gap-3">
-                        <Label htmlFor="HeadEmail">Head Email</Label>
-                        <Input id="HeadEmail" name="HeadEmail" placeholder="enter Head Email" required />
+                        <Label htmlFor="HeadEmail">
+                            Head Email
+                            <span className="ml-1.5 text-xs font-normal text-muted-foreground">(optional)</span>
+                        </Label>
+                        <Input id="HeadEmail" name="HeadEmail" placeholder="leave blank if unassigned" />
                     </div>
+
+
 
                         <SheetFooter className="mt-6">
                             <Button type="submit">Save changes</Button>
