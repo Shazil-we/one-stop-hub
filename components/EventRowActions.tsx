@@ -22,6 +22,7 @@ export default function EventRowActions({
             onEditSubmit={updateEventRowAction}
             onDelete={async () => deleteEventRowAction(String(event.event_id))}
         >
+                
             <input type="hidden" name="eventId" value={event.event_id} />
             <div className="grid gap-2">
                 <Label htmlFor={`eventName-${event.event_id}`}>Event Name</Label>

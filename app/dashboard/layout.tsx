@@ -11,7 +11,6 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 
-// Layouts must accept 'children' as a prop
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const user = await currentUser();
 
@@ -43,20 +42,17 @@ export default async function DashboardLayout({ children }: { children: React.Re
     role: dbUser?.role || "Student"
   };
 
-  // Determine the correct navigation array based on the database role
   const NavITEMS = 
     sidebarUser.role === "Administrator" ? ADMINISTRATOR_NAV : 
     sidebarUser.role === "SocietyHead" ? SOCIETYHEAD_NAV : 
     STUDENT_NAV;
-
   return (
     <SidebarProvider>
-      {/* Pass the dynamic items into the sidebar */}
       <AppSidebar user={sidebarUser} />
       <SidebarInset>
-        <header className="flex h-16 w-7xl shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 fixed backdrop-blur-xl z-10 max-w-8xl">
+        <header className="flex h-16 w-7xl shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 fixed backdrop-blur-xl z-100 max-w-8xl">
           <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
+            <SidebarTrigger className="-ml-1 cursor-pointer" />
             <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
             <Breadcrumb>
               <BreadcrumbList>

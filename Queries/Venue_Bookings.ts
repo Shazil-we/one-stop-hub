@@ -23,7 +23,6 @@ export async function extractVenueBookingById(id: string) {
     return (result.rows[0] as VenueBooking) || null;
   }
 
-//Request Venue Booking
 export async function requestVenueBooking(
   event_id: number,
   venue_id: number
@@ -35,7 +34,6 @@ export async function requestVenueBooking(
   await executeSQL(query, [event_id, venue_id]);
 } 
 
-//update venue booking approval status
 export async function updateBookingStatus(
   booking_id: string,
   status: string,

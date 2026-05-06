@@ -103,7 +103,7 @@ export const SOCIETYHEAD_NAV = [
     isActive: true,
     items: [
       { title: "View Events", url: "/dashboard/events" },
-      { title: "Book Events", url: "/dashboard/venues/book" }
+      { title: "Book Events", url: "/dashboard/events/book" }
     ],
   },
   {
@@ -135,7 +135,7 @@ export const SOCIETYHEAD_NAV = [
     url: "/dashboard/settings",
     icon: <Settings2Icon />,
     items: [
-      { title: "General", url: "#" },
+      { title: "General", url: "/dashboard/settings" },
     ],
     
   },
